@@ -1,14 +1,19 @@
 <template>
-	<div id="app">
-		<h1 class="text-pink-400">configuration tailwindcss</h1>
-	</div>
+  <div id="app">
+    <HeaderView/>
+  </div>
 </template>
 
 <script>
+
+import HeaderView from "@/view/HeaderView";
+
 export default {
-	name: "App",
-	components: {},
+  name: "App",
+  components: {HeaderView},
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

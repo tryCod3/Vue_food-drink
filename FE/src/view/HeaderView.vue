@@ -29,5 +29,6 @@ export default {
 .container__header {
 	min-height: 70px;
 	position: fixed;
+	z-index: 99 !important;
 }
 </style>

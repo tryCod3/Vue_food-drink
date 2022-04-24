@@ -11,7 +11,7 @@
 			<div class="self-center header__location">
 				<div
 					:class="style.header__location__link"
-					class="btn bg-[#f0f0f0] rounded header__location__link"
+					class="btn bg-[#f0f0f0] hover:cursor-pointer rounded header__location__link"
 				>
 					<h3>Đà Nẵng</h3>
 					<img
@@ -29,13 +29,17 @@
 				<div
 					v-for="type in typesFood"
 					:key="type"
-					class="h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d]"
+					class="h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d] hover:cursor-pointer"
 				>
 					<span class="self-center">{{ type }}</span>
 				</div>
 			</div>
 			<div class="self-center p-5 header__search">
-				<img alt="icon search" src="@/assets/image/iconfind24.png" />
+				<img
+					alt="icon search"
+					src="@/assets/image/iconfind24.png"
+					class="hover:cursor-pointer"
+				/>
 			</div>
 			<div
 				class="self-center border border-[#ee4d2d] text-[#ee4d2d] rounded header__login"
@@ -44,7 +48,7 @@
 			</div>
 		</div>
 		<div class="flex justify-center">
-			<select class="laptop:absolute top-5 right-2">
+			<select class="laptop:absolute top-5 right-2 hover:cursor-pointer">
 				<option value="vn">Tiếng Việt</option>
 				<option value="en">Tiếng Anh</option>
 			</select>

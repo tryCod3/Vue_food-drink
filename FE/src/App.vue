@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <ModalSearch/>
     <HeaderView/>
     <InformationView/>
   </div>
@@ -10,9 +11,11 @@
 import HeaderView from "@/view/HeaderView";
 import InformationView from "@/view/InformationView";
 
+import ModalSearch from "@/components/Modal/ModalSearch";
+
 export default {
   name: "App",
-  components: {HeaderView,InformationView},
+  components: {HeaderView, InformationView, ModalSearch},
 };
 </script>
 

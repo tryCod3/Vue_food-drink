@@ -1,5 +1,9 @@
 import MODAL from "@/constan/modal";
 
+export const prefix = (pre, action) => {
+    return `${pre}/${action}`
+}
+
 export const showModal = function (target) {
     const tagModal = target?.attributes['modal']?.nodeValue
     if (tagModal && tagModal === MODAL.search) {

@@ -11,8 +11,8 @@
       <div class="relative flex flex-col self-center header__location">
         <button
             id="dropdownDefault"
-            data-dropdown-toggle="dropdown"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-2 py-1.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            data-dropdown-toggle="dropdown"
             type="button"
             @click="showToggleLocation = !showToggleLocation"
         >
@@ -25,21 +25,21 @@
               xmlns="http://www.w3.org/2000/svg"
           >
             <path
+                d="M19 9l-7 7-7-7"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M19 9l-7 7-7-7"
             ></path>
           </svg>
         </button>
         <div
+            v-show=showToggleLocation
             id="dropdown"
             class="absolute top-[40px] z-10 w-52 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
-            v-show=showToggleLocation
         >
           <ul
-              class="py-1 text-sm text-gray-700 dark:text-gray-200"
               aria-labelledby="dropdownDefault"
+              class="py-1 text-sm text-gray-700 dark:text-gray-200"
           >
             <li
                 v-for="where in toggleLocations"
@@ -69,21 +69,21 @@
       </div>
       <div class="self-center p-5 header__search">
         <img
-            alt="icon search"
-            src="@/assets/image/iconfind24.png"
-            class="hover:cursor-pointer"
             :modal="modalSearch"
-            @click="showmodalSearch"
+            alt="icon search"
+            class="hover:cursor-pointer"
+            src="@/assets/image/iconfind24.png"
+            @click="showModalSearch"
         />
       </div>
       <div
           class="self-center border border-[#ee4d2d] text-[#ee4d2d] rounded header__login"
       >
-        <button class="btn">Đăng Nhập</button>
+        <button class="btn"> {{ btnLogin }}</button>
       </div>
     </div>
     <div class="flex justify-center">
-      <select class="laptop:absolute top-5 right-2 hover:cursor-pointer">
+      <select v-model="langApp" class="laptop:absolute top-5 right-2 hover:cursor-pointer" @change="changeLang">
         <option value="vn">Tiếng Việt</option>
         <option value="en">Tiếng Anh</option>
       </select>
@@ -94,12 +94,12 @@
 <script>
 
 import MODAL from "@/constan/modal";
-import {showModal} from "@/util";
-
+import {prefix, showModal} from "@/util";
+import LANG from "@/constan/lang";
 
 export default {
   name: "HeaderComp",
-  data() {
+  data: function () {
     return {
       showToggleLocation: false,
       modalSearch: MODAL.search,
@@ -117,15 +117,6 @@ export default {
           count: "2731 địa điểm",
         },
       ],
-      typesFood: [
-        "Đồ ăn",
-        "Thực phẩm",
-        "Bia",
-        "Hoa",
-        "Siêu thị",
-        "Thuốc",
-        "Thú cưng",
-      ],
       style: {
         header: {
           "laptop:flex": true,
@@ -141,9 +132,29 @@ export default {
       },
     };
   },
+  computed: {
+    typesFood() {
+      return this.$i18n.t('header.listsFood')
+    },
+    btnLogin() {
+      return this.$i18n.t('header.login')
+    },
+    langApp: {
+      set(e) {
+        this.$store.dispatch(prefix('langStore', LANG.SET_LANGUAGE), e);
+      },
+      get() {
+        return this.$store.getters[prefix('langStore', LANG.GET_LANGUAGE)];
+      }
+    },
+
+  },
   methods: {
-    showmodalSearch(e) {
+    showModalSearch(e) {
       showModal(e.target)
+    },
+    changeLang() {
+      this.$store.dispatch(prefix('langStore', LANG.SET), this.langApp)
     }
   }
 };

@@ -43,12 +43,12 @@
           >
             <li
                 v-for="where in toggleLocations"
-                :key="where.shortName"
+                :key="where.name"
 
                 class=" flex p-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="changeLocation(where)"
             >
-              <router-link :to="{name:'locationsItem' ,
+              <router-link :to="{name:'locations-item' ,
                           params:{location: convertType(where.name), tagItem: convertType(item)} }">
                 <span>
                   {{ where.name }}
@@ -68,14 +68,15 @@
         <li
             v-for="type in typesFood"
             :key="type"
-            class="list-none h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d] hover:cursor-pointer"
+            class="links list-none h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d] hover:cursor-pointer"
             @click="changeItem(type)">
-          <router-link :to="{name:'locationsItem' ,
+          <router-link :to="{name:'locations-item' ,
                           params:{location: convertType(location.name), tagItem: convertType(type)} }">
             <span class="self-center">
                 {{ type }}
             </span>
           </router-link>
+
         </li>
       </div>
       <div class="self-center p-5 header__search">
@@ -225,5 +226,9 @@ export default {
 <style scoped>
 .header {
   width: 1200px;
+}
+
+#nav a.my-color-link {
+  color: #ab26ab;
 }
 </style>

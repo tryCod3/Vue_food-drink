@@ -15,7 +15,7 @@
             <div
                 class="text-sky-600 hover:cursor-pointer">
               <router-link
-                  :to="{name: 'locationsItemFilter' , params: {location: location.name , tagItem: item , filter: 'all' } }">
+                  :to="{name: 'locations-item-filter' , params: {location: location.name , tagItem: item , filter: 'all' } }">
                 {{
                   getAllList
                 }}

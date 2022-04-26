@@ -10,13 +10,13 @@ const routes = [
         component: () =>
             import(
                 /* webpackChunkName: "home"*/
-                '@/view/PageShowListView'
+                '@/view/CartDetailView'
                 )
 
     },
     {
         path: "/:location/:tagItem",
-        name: "locationsItem",
+        name: "locations-item",
         props: true,
         component: () =>
             import(
@@ -25,7 +25,7 @@ const routes = [
                 ),
         children: [{
             path: ":filter",
-            name: "locationsItemFilter",
+            name: "locations-item-filter",
             props: true,
             component: () =>
                 import(
@@ -38,6 +38,7 @@ const routes = [
 
 const router = new Router({
     mode: "history",
+    linkExactActiveClass: "my-color-link",
     routes
 })
 

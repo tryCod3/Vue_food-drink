@@ -39,5 +39,11 @@ export const vn = {
         getAllList: 'Xem tất cả',
         btnDetail: 'Chi tiết'
     }
+    ,
+    cart: {
+        btnAdd: 'Thêm vào giỏ hàng',
+        topic: ['pate', "xíu mại", 'thịt nướng', 'trứng', 'chả giò'],
+        level: ['thừơng', 'trung bình', 'cay', 'rất cay'],
+    }
 
 }

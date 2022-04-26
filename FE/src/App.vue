@@ -2,7 +2,9 @@
   <div id="app">
     <ModalSearch/>
     <HeaderView/>
-    <router-view/>
+    <transition name="fade" mode="out-in">
+      <router-view :key="$route.path"/>
+    </transition>
   </div>
 </template>
 
@@ -18,5 +20,15 @@ export default {
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 
 </style>

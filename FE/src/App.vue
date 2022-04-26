@@ -2,20 +2,18 @@
   <div id="app">
     <ModalSearch/>
     <HeaderView/>
-    <InformationView/>
+    <router-view/>
   </div>
 </template>
 
 <script>
 
 import HeaderView from "@/view/HeaderView";
-import InformationView from "@/view/InformationView";
-
 import ModalSearch from "@/components/Modal/ModalSearch";
 
 export default {
   name: "App",
-  components: {HeaderView, InformationView, ModalSearch},
+  components: {HeaderView, ModalSearch},
 };
 </script>
 

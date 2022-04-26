@@ -1,24 +1,32 @@
 <template>
   <ShowListSlot>
-    <div slot="show-list">
-      <CartFoodSlot
+    <div v-for="i in 27" :key="i" slot="show-list">
+      <CartComp
+          name="Quán Nhậu Bình Dân A Béo"
+          description="14 An Nhơn , Đường phú nhuận , thành phố Tuy Phước"
+          :btn="btnDetail"
       >
-
-      </CartFoodSlot>
+      </CartComp>
     </div>
+    
   </ShowListSlot>
 </template>
 
 <script>
 
 import ShowListSlot from "@/slot/ShowListSlot";
-import CartFoodSlot from "@/slot/CartFoodSlot";
+import CartComp from "@/components/Cart/CartComp";
 
 export default {
   name: "PageShowListComp",
   components: {
     ShowListSlot,
-    CartFoodSlot
+    CartComp
+  },
+  computed: {
+    btnDetail() {
+      return this.$i18n.t('information.btnDetail');
+    }
   }
 }
 </script>

@@ -8,19 +8,26 @@
           <h2 class="text-black">{{ priority }}</h2>
           <div class="flex">
             <img
-                src="@/assets/image/window12.png"
                 alt="square icon"
                 class="mr-0.5 object-contain"
+                src="@/assets/image/window12.png"
             />
-            <router-view class="text-sky-600 hover:cursor-pointer">{{ getAllList }}</router-view>
+            <div
+                class="text-sky-600 hover:cursor-pointer">
+              <router-link
+                  :to="{name: 'locationsItemFilter' , params: {location: location.name , tagItem: item , filter: 'all' } }">
+                {{
+                  getAllList
+                }}
+              </router-link>
+            </div>
           </div>
         </div>
-        <!-- grid grid-cols-3 gap-2 -->
         <div class="grid grid-cols-3 gap-2 p-2">
           <CartComp v-for="(food , index) in listfood" :key="index"
-                    :name="food.name"
+                    :btn="btnDetail"
                     :description="food.description"
-                    :btn="btnDetail"/>
+                    :name="food.name"/>
         </div>
       </div>
     </div>
@@ -29,6 +36,9 @@
 
 <script>
 import CartComp from "@/components/Cart/CartComp";
+import {prefix} from "@/util";
+import INFORMATION from "@/constan/information";
+
 
 export default {
   name: "informationlistElem",
@@ -97,6 +107,21 @@ export default {
     };
   },
   computed: {
+    location: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('informationStore', INFORMATION.LOCATION.GET)]
+      }
+    },
+    item: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('informationStore', INFORMATION.ITEM.GET)]
+      }
+    }
+    ,
     priority() {
       return this.$i18n.t('information.priority')
     },
@@ -105,7 +130,7 @@ export default {
     },
     btnDetail() {
       return this.$i18n.t('information.btnDetail')
-    }
+    },
 
   }
 };

@@ -16,7 +16,7 @@ export const vn = {
     ,
     information: {
         title: 'Đặt Đồ ăn, giao hàng từ 20...',
-        description: 'Có 9923 Địa Điểm Ở Đà Nẵng Từ 06:00 - 22:00',
+        description: 'Có 9923 Địa Điểm Ở {location} Từ 06:00 - 22:00',
         search: 'tìm kiếm địa chỉ , món ăn ,...',
         tags: ["All",
             "Đồ ăn",
@@ -34,7 +34,7 @@ export const vn = {
             "Cơm hộp"]
         ,
         titleLink1: 'Sử dụng App ShopeeFood để có nhiều giảm giá',
-        titleLink2: 'và trải nghiêmk tốt hơn',
+        titleLink2: 'và trải nghiêm tốt hơn',
         priority: 'Ưu đãi',
         getAllList: 'Xem tất cả',
         btnDetail: 'Chi tiết'

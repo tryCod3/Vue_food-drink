@@ -14,7 +14,7 @@ export const en = {
     ,
     information: {
         title: 'Order Food, delivery from 20 ...',
-        description: 'From 9923 Places In Da Nang City From 06:00 - 22:00',
+        description: 'From 9923 Places In {location} City From 06:00 - 22:00',
         search: 'search place , item ,...',
         tags: ["All",
             "Food",

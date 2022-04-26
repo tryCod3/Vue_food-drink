@@ -16,7 +16,7 @@
             type="button"
             @click="showToggleLocation = !showToggleLocation"
         >
-          Đà Nẵng
+          {{ location.name }}
           <svg
               class="ml-2 w-4 h-4"
               fill="none"
@@ -43,12 +43,18 @@
           >
             <li
                 v-for="where in toggleLocations"
-                :key="where.location"
+                :key="where.shortName"
+
                 class=" flex p-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                @click="showToggleLocation = !showToggleLocation"
+                @click="changeLocation(where)"
             >
-              <a href="#">{{ where.location }}</a>
-              <p>{{ where.count }}</p>
+              <router-link :to="{name:'locationsItem' ,
+                          params:{location: convertType(where.name), tagItem: convertType(item)} }">
+                <span>
+                  {{ where.name }}
+                </span>
+                <p>{{ where.count }} địa điểm</p>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -59,13 +65,18 @@
           :class="style.header__typefood"
           class="self-center flex-1 tablet:pl-12 header__typefood"
       >
-        <div
+        <li
             v-for="type in typesFood"
             :key="type"
-            class="h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d] hover:cursor-pointer"
-        >
-          <span class="self-center">{{ type }}</span>
-        </div>
+            class="list-none h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d] hover:cursor-pointer"
+            @click="changeItem(type)">
+          <router-link :to="{name:'locationsItem' ,
+                          params:{location: convertType(location.name), tagItem: convertType(type)} }">
+            <span class="self-center">
+                {{ type }}
+            </span>
+          </router-link>
+        </li>
       </div>
       <div class="self-center p-5 header__search">
         <img
@@ -83,7 +94,7 @@
       </div>
     </div>
     <div class="flex justify-center">
-      <select v-model="langApp" class="laptop:absolute top-5 right-2 hover:cursor-pointer" @change="changeLang">
+      <select v-model="langApp" class="laptop:absolute top-5 right-2 hover:cursor-pointer">
         <option value="vn">Tiếng Việt</option>
         <option value="en">Tiếng Anh</option>
       </select>
@@ -94,27 +105,30 @@
 <script>
 
 import MODAL from "@/constan/modal";
-import {prefix, showModal} from "@/util";
-import LANG from "@/constan/lang";
+import {coverRoute, prefix, showModal} from "@/util";
+import INFORMATION from "@/constan/information";
+
+const nameStore = 'informationStore'
 
 export default {
   name: "HeaderComp",
+
   data: function () {
     return {
       showToggleLocation: false,
       modalSearch: MODAL.search,
       toggleLocations: [
         {
-          location: "Đà Nẵng",
-          count: "12345 địa điểm",
+          name: "Đà Nẵng",
+          count: 12345,
         },
         {
-          location: "Hồ Chí Minh",
-          count: "16153 địa điểm",
+          name: "Hồ Chí Minh",
+          count: 16153,
         },
         {
-          location: "Hà Nội",
-          count: "2731 địa điểm",
+          name: "Hà Nội",
+          count: 2731,
         },
       ],
       style: {
@@ -133,6 +147,20 @@ export default {
     };
   },
   computed: {
+    paramLocation: {
+      set() {
+      },
+      get() {
+        return this.$route.params?.location
+      }
+    },
+    paramTagItem: {
+      set() {
+      },
+      get() {
+        return this.$route.params?.tagItem
+      }
+    },
     typesFood() {
       return this.$i18n.t('header.listsFood')
     },
@@ -141,23 +169,57 @@ export default {
     },
     langApp: {
       set(e) {
-        this.$store.dispatch(prefix('langStore', LANG.SET_LANGUAGE), e);
+        this.$store.dispatch(prefix(nameStore, INFORMATION.LANG.SET), e);
       },
       get() {
-        return this.$store.getters[prefix('langStore', LANG.GET_LANGUAGE)];
+        return this.$store.getters[prefix(nameStore, INFORMATION.LANG.GET)];
       }
     },
-
+    location: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix(nameStore, INFORMATION.LOCATION.GET)];
+      }
+    },
+    item: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix(nameStore, INFORMATION.ITEM.GET)];
+      }
+    }
   },
   methods: {
     showModalSearch(e) {
       showModal(e.target)
     },
-    changeLang() {
-      this.$store.dispatch(prefix('langStore', LANG.SET), this.langApp)
+    changeLocation(where) {
+      this.showToggleLocation = !this.showToggleLocation;
+      where.name = coverRoute(where.name);
+      this.$store.dispatch(prefix(nameStore, INFORMATION.LOCATION.SET), where)
+    },
+    changeItem(item) {
+      this.$store.dispatch(prefix(nameStore, INFORMATION.ITEM.SET), item)
+    },
+    convertType(type) {
+      return coverRoute(type);
     }
+  },
+  watch: {
+    immediate: true,
+    deep: true,
+    '$route'(to) {
+      this.paramLocation = to.params?.location ?? this.paramLocation
+      this.paramTagItem = to.params?.tagItem ?? this.paramTagItem
+      if (this.paramLocation && this.paramTagItem) {
+        this.location.name = coverRoute(this.paramLocation);
+        this.$store.dispatch(prefix(nameStore, INFORMATION.LOCATION.SET), this.location);
+        this.$store.dispatch(prefix(nameStore, INFORMATION.ITEM.SET), this.paramTagItem);
+      }
+    },
   }
-};
+}
 </script>
 
 <style scoped>

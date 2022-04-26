@@ -81,6 +81,12 @@
 </template>
 
 <script>
+
+import INFORMATION from "@/constan/information";
+import {prefix} from "@/util";
+
+const nameStore = 'informationStore'
+
 export default {
   name: "InformationTagElem",
 
@@ -88,11 +94,18 @@ export default {
     return {};
   },
   computed: {
+    location: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix(nameStore, INFORMATION.LOCATION.GET)];
+      }
+    },
     title() {
       return this.$i18n.t('information.title')
     },
     description() {
-      return this.$i18n.t('information.description')
+      return this.$i18n.t('information.description', {location: this.location.name})
     },
     search() {
       return this.$i18n.t('information.search')

@@ -1,9 +1,14 @@
 import MODAL from "@/constan/modal";
+import {uuid} from 'vue-uuid';
+
+
+export const genId = (pre) => {
+    return prefix(pre, uuid.v1());
+}
 
 export const prefix = (pre, action) => {
     return `${pre}/${action}`
 }
-
 
 function convertViToEn(str, toUpperCase = false) {
     str = str.toLowerCase();

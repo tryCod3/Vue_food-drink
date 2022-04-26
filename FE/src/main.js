@@ -7,6 +7,7 @@ import "./index.css";
 
 Vue.config.productionTip = false;
 
+
 const app = new Vue({
     i18n,
     store,

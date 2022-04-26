@@ -1,0 +1,81 @@
+{
+  "account": [
+    {
+      "id": "account-1",
+      "user": "nth27-10",
+      "pass": "123",
+      "role": "admin",
+      "createAt": 1650958675140
+    },
+    {
+      "id": "account-2",
+      "user": "nttd27-08",
+      "pass": "456",
+      "role": "admin",
+      "createAt": 1650958675140
+    }
+  ],
+  "list": [
+    {
+      "id": "list-3",
+      "name": "Quán A Phương Mập",
+      "description": "Quán Mở cửa từ 06:00 - 23:59 , T2 - T7",
+      "image": "",
+      "price": "300.000",
+      "createAt": 1650958675140,
+      "tags": [
+        "nhậu",
+        "đồ nướng"
+      ],
+      "signLocation": "da-nang"
+    },
+    {
+      "id": "list-2",
+      "name": "Quán A Cháo Lòng",
+      "location": "11/2 Lê Đại Hành , TP Hồ Chí Minh",
+      "description": "Quán Mở cửa từ 06:00 - 23:59 , T2 - T7",
+      "image": "",
+      "price": "302.013",
+      "createAt": 1650958675140,
+      "tags": [
+        "cháo",
+        "lòng"
+      ],
+      "signLocation": "ho-chi-minh"
+    },
+    {
+      "id": "list-1",
+      "name": "Quán C Bảo Đại",
+      "location": "12 Nguyễn Trãi , TP Hà Nội",
+      "description": "Quán Mở cửa từ 06:00 - 23:59 , T2 - T7",
+      "image": "",
+      "price": "210.000",
+      "createAt": 1650958675140,
+      "tags": [
+        "Tiết canh",
+        "đồ nướng",
+        "nhậu"
+      ],
+      "signLocation": "da-nang"
+    }
+  ],
+  "review": [],
+  "location": [
+    {
+      "id": "location-1",
+      "sign": "da-nang",
+      "location": "12 Nguyễn Trãi , TP Đà Nẵng"
+    },
+    {
+      "id": "location-2",
+      "sign": "ho-chi-minh",
+      "location": "13/7 Bình Thạnh , Phú tài , TP Hồ Chí Minh"
+    },
+    {
+      "id": "location-3",
+      "sign": "ha-noi",
+      "location": "33/4 Hồ Tây , TP Hà Nội"
+    }
+  ],
+  "cart": []
+}

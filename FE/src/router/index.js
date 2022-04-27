@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router'
 
+
 Vue.use(Router);
 
 const routes = [
@@ -10,7 +11,7 @@ const routes = [
         component: () =>
             import(
                 /* webpackChunkName: "home"*/
-                '@/view/CartDetailView'
+                '@/view/InformationView'
                 )
 
     },
@@ -23,17 +24,20 @@ const routes = [
                 /* webpackChunkName: "locationsItem"*/
                 "@/view/InformationView"
                 ),
-        children: [{
-            path: ":filter",
-            name: "locations-item-filter",
-            props: true,
-            component: () =>
-                import(
-                    /* webpackChunkName: "locationsItemFilter"*/
-                    "@/view/PageShowListView"
-                    )
-        }]
+    },
+    {
+        path: "/:location/:tagItem/watch/:filter",
+        name: "location-item-watch",
+        props: true,
+        component: () => import(/* webpackChunkName: "location-item-watch"*/ '@/view/PageShowListView')
+    },
+    {
+        path: "/:location/:tagItem/detail/:id",
+        name: "location-item-detail-id",
+        props: true,
+        component: () => import(/* webpackChunkName: "location-item-detail-id"*/ '@/view/CartDetailView')
     }
+
 ]
 
 const router = new Router({
@@ -43,11 +47,6 @@ const router = new Router({
 })
 
 // router.beforeEach((to, from, next) => {
-//     console.log(from, to, to.params);
-//     if (to.params.loaction)
-//         to.params.location = coverRoute(to.params.location);
-//     if (to.params.tagItem)
-//         to.params.tagItem = coverRoute(to.params.tagItem)
-//     next()
+//
 // });
 export default router

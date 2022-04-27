@@ -16,7 +16,7 @@
             type="button"
             @click="showToggleLocation = !showToggleLocation"
         >
-          {{ location.name }}
+          {{ paramLocation }}
           <svg
               class="ml-2 w-4 h-4"
               fill="none"
@@ -44,12 +44,11 @@
             <li
                 v-for="where in toggleLocations"
                 :key="where.name"
-
                 class=" flex p-2 justify-between hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                @click="changeLocation(where)"
+                @click="showToggleLocation = !showToggleLocation"
             >
               <router-link :to="{name:'locations-item' ,
-                          params:{location: convertType(where.name), tagItem: convertType(item)} }">
+                          params:{location: convertType(where.name), tagItem: paramTagItem }  }">
                 <span>
                   {{ where.name }}
                 </span>
@@ -69,9 +68,9 @@
             v-for="type in typesFood"
             :key="type"
             class="links list-none h-full float-left pt-2.5 px-3 pb-4 hover:border hover:border-t-0 hover:border-l-0 hover:border-r-0 hover:border-[#ee4d2d] hover:text-[#ee4d2d] hover:cursor-pointer"
-            @click="changeItem(type)">
+        >
           <router-link :to="{name:'locations-item' ,
-                          params:{location: convertType(location.name), tagItem: convertType(type)} }">
+                          params:{location: paramLocation, tagItem: convertType(type) }  }">
             <span class="self-center">
                 {{ type }}
             </span>
@@ -118,6 +117,7 @@ export default {
     return {
       showToggleLocation: false,
       modalSearch: MODAL.search,
+
       toggleLocations: [
         {
           name: "Đà Nẵng",
@@ -152,14 +152,14 @@ export default {
       set() {
       },
       get() {
-        return this.$route.params?.location
+        return this.$route.params?.location ?? 'da-nang'
       }
     },
     paramTagItem: {
       set() {
       },
       get() {
-        return this.$route.params?.tagItem
+        return this.$route.params?.tagItem ?? 'do-an'
       }
     },
     typesFood() {
@@ -176,50 +176,15 @@ export default {
         return this.$store.getters[prefix(nameStore, INFORMATION.LANG.GET)];
       }
     },
-    location: {
-      set() {
-      },
-      get() {
-        return this.$store.getters[prefix(nameStore, INFORMATION.LOCATION.GET)];
-      }
-    },
-    item: {
-      set() {
-      },
-      get() {
-        return this.$store.getters[prefix(nameStore, INFORMATION.ITEM.GET)];
-      }
-    }
   },
   methods: {
     showModalSearch(e) {
       showModal(e.target)
     },
-    changeLocation(where) {
-      this.showToggleLocation = !this.showToggleLocation;
-      where.name = coverRoute(where.name);
-      this.$store.dispatch(prefix(nameStore, INFORMATION.LOCATION.SET), where)
-    },
-    changeItem(item) {
-      this.$store.dispatch(prefix(nameStore, INFORMATION.ITEM.SET), item)
-    },
     convertType(type) {
       return coverRoute(type);
     }
   },
-  watch: {
-    immediate: true,
-    deep: true,
-    '$route'(to) {
-      this.paramLocation = to.params?.location ?? this.paramLocation
-      this.paramTagItem = to.params?.tagItem ?? this.paramTagItem
-      if (this.paramLocation && this.paramTagItem) {
-        this.location.name = coverRoute(this.paramLocation);
-        this.$store.dispatch(prefix(nameStore, INFORMATION.LOCATION.SET), this.location);
-        this.$store.dispatch(prefix(nameStore, INFORMATION.ITEM.SET), this.paramTagItem);
-      }
-    },
-  }
 }
 </script>
 

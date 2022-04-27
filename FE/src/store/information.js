@@ -10,7 +10,7 @@ export const informationStore = {
             name: coverRoute("Đà Nẵng"),
             count: 9923
         },
-        item: 'food'
+        item: 'do-an'
     }, getters: {
         [INFORMATION.LANG.GET](state) {
             return state.lang;

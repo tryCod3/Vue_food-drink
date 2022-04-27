@@ -1,7 +1,7 @@
 <template>
 
   <div class="basis-3/4">
-    <img alt="product image" class="p-2 w-full rounded-t-lg object-contain" src="@/assets/image/listfood.jpg">
+    <img alt="product image" class="p-2 w-full rounded-t-lg object-contain" :src=image>
     <div class="px-5 pb-5">
       <a href="#">
         <h1 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white truncate ...">{{ name }}</h1>
@@ -53,7 +53,8 @@ export default {
   props: {
     name: String,
     description: String,
-    price: String
+    price: String,
+    image: String,
   }
 }
 </script>

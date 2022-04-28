@@ -15,7 +15,7 @@
             <div
                 class="text-sky-600 hover:cursor-pointer">
               <router-link
-                  :to="{name: 'location-item-watch' , params: {location: paramLocation , tagItem: paramTagItem , filter: 'all' } }"
+                  :to="{name: 'location-item-watch' , params: {location: paramLocation , tagItem: paramTagItem } }"
               >
                 {{
                   getAllList
@@ -36,7 +36,6 @@
       </div>
     </div>
     <router-view/>
-
   </div>
 </template>
 

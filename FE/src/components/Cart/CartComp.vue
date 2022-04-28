@@ -18,9 +18,9 @@
         {{ description }}
       </p>
       <div class="flex justify-between">
-        <router-link :to="{name: 'location-item-detail-id' , params: {
-          location: location.name,
-          tagItem: item,
+        <router-link :to="{name: 'cart-detail' , params: {
+          location: paramLocation,
+          tagItem: paramTagItem,
           id: id
         }}">
           <button
@@ -30,10 +30,15 @@
             {{ btn }}
           </button>
         </router-link>
-        <img
-            alt="icon setting for admin"
-            class="hover:border-2  hover:rounded-full hover:border-amber-500 hover:cursor-pointer"
-            src="@/assets/image/dots30.png"/>
+        <div class="relative">
+          <button class="text-black text-3xl hover:cursor-pointer" @click="toggle = !toggle">...</button>
+          <div v-show="toggle" class="absolute -top-[30px] -left-[70px] bg-amber-200 rounded  text-black">
+            <ul>
+              <li class="px-5 hover:bg-amber-400" @click="handleUpdate">update</li>
+              <li class="px-5 hover:bg-amber-400" @click="handleDelete">delete</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </CartFoodSlot>
@@ -41,8 +46,13 @@
 
 <script>
 import CartFoodSlot from "@/slot/CartFoodSlot";
-import {prefix} from "@/util";
+import {prefix, showModal} from "@/util";
+import MODAL from "@/constan/modal";
 import INFORMATION from "@/constan/information";
+import {ApiReponsitory} from "@/api/ApiReponsitory";
+import {API_TABLE} from "@/constan/api";
+
+const api = new ApiReponsitory(API_TABLE.LIST)
 
 export default {
   name: "CartComp.vue",
@@ -54,21 +64,54 @@ export default {
     description: String,
     btn: String
   },
+  data() {
+    return {
+      toggle: false
+    }
+  },
+  methods: {
+    handleUpdate() {
+      this.toggle = !this.toggle;
+      this.$store.dispatch(prefix('informationStore', INFORMATION.MODEL.SET), this.id);
+      showModal(MODAL.cart_update);
+    },
+    async handleDelete() {
+      this.toggle = !this.toggle;
+      this.$swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+      }).then(async res => {
+        if (res.isConfirmed) {
+          await api.delete(this.id);
+          this.$swal({
+            title: 'Success it!',
+            delay: 1000
+          }).then(() => window.location.reload())
+        }
+      })
+    }
+  },
   computed: {
-    location: {
+    paramLocation: {
       set() {
       },
       get() {
-        return this.$store.getters[prefix('informationStore', INFORMATION.LOCATION.GET)]
+        return this.$route.params?.location ?? 'da-nang'
       }
     },
-    item: {
+    paramTagItem: {
       set() {
       },
       get() {
-        return this.$store.getters[prefix('informationStore', INFORMATION.ITEM.GET)]
+        return this.$route.params?.tagItem ?? 'do-an'
       }
-    }
+    },
   }
 }
 </script>

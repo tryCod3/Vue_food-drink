@@ -10,6 +10,10 @@ const INFORMATION = {
     ITEM: {
         SET: "SET_ITEM",
         GET: 'GET_ITEM'
+    },
+    MODEL: {
+        SET: "SET_MODEL",
+        GET: "GET_MODEL"
     }
 }
 

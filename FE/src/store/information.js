@@ -9,8 +9,8 @@ export const informationStore = {
         location: {
             name: coverRoute("Đà Nẵng"),
             count: 9923
-        },
-        item: 'do-an'
+        }, item: 'do-an',
+        idModel: ''
     }, getters: {
         [INFORMATION.LANG.GET](state) {
             return state.lang;
@@ -18,7 +18,9 @@ export const informationStore = {
             return state.location;
         }, [INFORMATION.ITEM.GET](state) {
             return state.item;
-        },
+        }, [INFORMATION.MODEL.GET](state) {
+            return state.idModel
+        }
     }, mutations: {
         [INFORMATION.LANG.SET](state, payload) {
             state.lang = payload;
@@ -30,7 +32,9 @@ export const informationStore = {
             }
         }, [INFORMATION.ITEM.SET](state, payload) {
             state.item = coverRoute(payload);
-        },
+        }, [INFORMATION.MODEL.SET](state, payload) {
+            state.idModel = payload;
+        }
     }, actions: {
         [INFORMATION.LANG.SET]({commit}, payload) {
             commit(INFORMATION.LANG.SET, payload);
@@ -40,6 +44,9 @@ export const informationStore = {
         },
         [INFORMATION.ITEM.SET]({commit}, payload) {
             commit(INFORMATION.ITEM.SET, payload);
+        },
+        [INFORMATION.MODEL.SET]({commit}, payload) {
+            commit(INFORMATION.MODEL.SET, payload);
         }
     }
 }

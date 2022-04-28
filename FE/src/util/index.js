@@ -1,6 +1,14 @@
-import MODAL from "@/constan/modal";
 import {uuid} from 'vue-uuid';
 
+
+export const log = function (name) {
+
+    function show(mess) {
+        console.log(`[${name}: ] ${mess}`)
+    }
+
+    return show;
+}
 
 export const genId = (pre) => {
     return prefix(pre, uuid.v1());
@@ -32,17 +40,13 @@ export const coverRoute = function (name) {
 
 
 export const showModal = function (target) {
-    const tagModal = target?.attributes['modal']?.nodeValue
-    if (tagModal && tagModal === MODAL.search) {
-        const modal = document.getElementById(`${tagModal}`)
-        if (modal)
-            modal.style.display = 'block'
-    }
+    const modal = document.getElementById(`${target}`)
+    if (modal)
+        modal.style.display = 'block'
 }
 
 export const turnOffModal = function (tagModal) {
     const modal = document.getElementById(`${tagModal}`)
-
     if (modal)
         modal.style.display = 'none'
 }

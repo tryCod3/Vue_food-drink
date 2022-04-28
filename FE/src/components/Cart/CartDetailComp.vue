@@ -18,8 +18,6 @@
 import CartDetailImage from "@/components/Cart/CartDetailImage";
 import CartDetailInformation from "@/components/Cart/CartDetailInformation";
 import CartDetailSupgget from "@/components/Cart/CartDetailSupgget";
-import {prefix} from "@/util";
-import INFORMATION from "@/constan/information";
 import {API_TABLE} from "@/constan/api";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 
@@ -39,26 +37,27 @@ export default {
     }
   },
   computed: {
-    location: {
+    paramLocation: {
       set() {
       },
       get() {
-        return this.$store.getters[prefix('informationStore', INFORMATION.LOCATION.GET)]
+        return this.$route.params?.location ?? 'da-nang'
       }
     },
-    item: {
+    paramTagItem: {
       set() {
       },
       get() {
-        return this.$store.getters[prefix('informationStore', INFORMATION.ITEM.GET)]
+        return this.$route.params?.tagItem ?? 'do-an'
       }
-    }
+    },
   },
   methods: {
     async getApiDetail() {
-      const params = {signLocation: this.location.name, id: this.$route.params.id}
+      const params = {signLocation: this.paramLocation, id: this.$route.params.id}
+      console.log(params)
       await api.call('get', params);
-      await api._filter(food => food.tags.includes(this.item))
+      await api._filter(food => food.tags.includes(this.paramTagItem))
       if (api.data.length > 0) {
         this.target = api.data[0];
       } else {

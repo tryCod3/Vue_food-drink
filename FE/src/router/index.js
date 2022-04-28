@@ -16,9 +16,8 @@ const routes = [
 
     },
     {
-        path: "/:location/:tagItem",
-        name: "locations-item",
-        props: true,
+        path: "/home/:location/:tagItem",
+        name: "location-item",
         component: () =>
             import(
                 /* webpackChunkName: "locationsItem"*/
@@ -26,18 +25,28 @@ const routes = [
                 ),
     },
     {
-        path: "/:location/:tagItem/watch/:filter",
+        path: "/home/:location/:tagItem/watch",
         name: "location-item-watch",
         props: true,
         component: () => import(/* webpackChunkName: "location-item-watch"*/ '@/view/PageShowListView')
     },
     {
-        path: "/:location/:tagItem/detail/:id",
-        name: "location-item-detail-id",
+        path: "/cart/:location/:tagItem/detail/:id",
+        name: "cart-detail",
         props: true,
         component: () => import(/* webpackChunkName: "location-item-detail-id"*/ '@/view/CartDetailView')
     }
-
+    ,
+    {
+        path: "/cart/add",
+        name: "cart-add",
+        component: () => import(/* webpackChunkName: "cart-add"*/ '@/view/FormCartView')
+    },
+    // {
+    //     path: "/cart/update/:id",
+    //     name: "cart-update",
+    //     component: () => import(/* webpackChunkName: "cart-update"*/ '@/components/Modal/ModalCartUpdate')
+    // },
 ]
 
 const router = new Router({

@@ -9,7 +9,7 @@
           :price="this.target.price"
       />
       <CartDetailInformation/>
-      <CartDetailSupgget/>
+      <CartDetailSupgget :location="paramLocation" :item="paramTagItem"/>
     </div>
   </div>
 </template>

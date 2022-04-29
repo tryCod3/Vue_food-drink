@@ -46,6 +46,20 @@ export default {
     level() {
       return this.$i18n.t('cart.level')
     },
+    paramLocation: {
+      set() {
+      },
+      get() {
+        return this.$route.params?.location ?? 'da-nang'
+      }
+    },
+    paramTagItem: {
+      set() {
+      },
+      get() {
+        return this.$route.params?.tagItem ?? 'do-an'
+      }
+    },
   }
 }
 </script>

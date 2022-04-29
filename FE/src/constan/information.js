@@ -11,9 +11,9 @@ const INFORMATION = {
         SET: "SET_ITEM",
         GET: 'GET_ITEM'
     },
-    MODEL: {
-        SET: "SET_MODEL",
-        GET: "GET_MODEL"
+    ID_MODEL: {
+        SET: "SET_ID_MODEL",
+        GET: "GET_ID_MODEL"
     }
 }
 

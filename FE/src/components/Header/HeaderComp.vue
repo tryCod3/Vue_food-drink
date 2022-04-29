@@ -89,10 +89,18 @@
       <div
           class="self-center border border-[#ee4d2d] text-[#ee4d2d] rounded header__login"
       >
-        <button class="btn"> {{ btnLogin }}</button>
+        <button class="btn" @click="['fooder', 'admin' , 'normal'].includes(role) ? handleLogout() : handleLogin()">
+          {{ btnLogin }}
+        </button>
       </div>
     </div>
     <div class="flex justify-center">
+      <div class="absolute right-[150px] top-2">
+        <img alt="user icon" src="@/assets/image/user.png"/>
+        <div :class="role === 'admin' ? 'text-red-600' : 'text-teal-600'" class="text-center w-full">
+          {{ name }}
+        </div>
+      </div>
       <select v-model="langApp" class="laptop:absolute top-5 right-2 hover:cursor-pointer">
         <option value="vn">Tiếng Việt</option>
         <option value="en">Tiếng Anh</option>
@@ -106,17 +114,22 @@
 import MODAL from "@/constan/modal";
 import {coverRoute, prefix, showModal} from "@/util";
 import INFORMATION from "@/constan/information";
+import USER from "@/constan/user";
 
 const nameStore = 'informationStore'
 
 export default {
   name: "HeaderComp",
-
+  beforeUpdate() {
+    this.name = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.user ?? '' : ''
+    this.role = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
+  },
   data: function () {
     return {
       showToggleLocation: false,
       modalSearch: MODAL.search,
-
+      name: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.user ?? '' : '',
+      role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : '',
       toggleLocations: [
         {
           name: "Đà Nẵng",
@@ -165,7 +178,7 @@ export default {
       return this.$i18n.t('header.listsFood')
     },
     btnLogin() {
-      return this.$i18n.t('header.login')
+      return this.role === '' ? this.$i18n.t('header.login') : this.$i18n.t('header.logout')
     },
     langApp: {
       set(e) {
@@ -175,6 +188,13 @@ export default {
         return this.$store.getters[prefix(nameStore, INFORMATION.LANG.GET)];
       }
     },
+    wellCome: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('userStore', USER.MESSAGE.GET)]
+      }
+    }
   },
   methods: {
     showModalSearch() {
@@ -182,8 +202,26 @@ export default {
     },
     convertType(type) {
       return coverRoute(type);
+    },
+    handleLogin() {
+      this.$router.push({name: 'user-login'});
+    },
+    handleLogout() {
+      localStorage.setItem('model', '')
+      this.name = ''
+      this.role = ''
+      if (this.$route.name !== 'home')
+        this.$router.push({name: 'home'});
+      this.$toasted.show(this.$i18n.t('user.message.logout'), {
+        delay: 1000,
+        duration: 3000,
+        icon: 'check',
+        position: 'top-right',
+        theme: 'bubble',
+      })
     }
   },
+
 }
 </script>
 

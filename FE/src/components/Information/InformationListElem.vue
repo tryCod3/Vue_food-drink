@@ -31,6 +31,7 @@
                     :description="food.description"
                     :image="food.image"
                     :name="food.name"
+                    :role="role"
           />
         </div>
       </div>
@@ -50,12 +51,17 @@ console.log("create information")
 
 export default {
   name: "informationlistElem",
+  beforeUpdate() {
+    // this.role = this.$store.getters[prefix('userStore', USER.MODEL.GET)]?.role
+    this.role = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
+  },
   components: {
     CartComp
   },
   data() {
     return {
       listFood: [],
+      role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
     }
   },
   methods: {

@@ -26,7 +26,6 @@ ApiReponsitory.prototype._filter = async function (fn) {
     return Object.getPrototypeOf(this);
 }
 
-
 ApiReponsitory.prototype.add = async function (model) {
     if (this.loading || !model) return false;
     return await addApi(this.nameTable, model);

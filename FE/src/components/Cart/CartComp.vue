@@ -30,15 +30,19 @@
             {{ btn }}
           </button>
         </router-link>
-        <div class="relative">
-          <button class="text-black text-3xl hover:cursor-pointer" @click="toggle = !toggle">...</button>
-          <div v-show="toggle" class="absolute -top-[30px] -left-[70px] bg-amber-200 rounded  text-black">
-            <ul>
-              <li class="px-5 hover:bg-amber-400" @click="handleUpdate">update</li>
-              <li class="px-5 hover:bg-amber-400" @click="handleDelete">delete</li>
-            </ul>
+        <template>
+
+          <div v-if="role === 'admin'" class="relative">
+            <button class="text-black text-3xl hover:cursor-pointer" @click="toggle = !toggle">...</button>
+            <div v-show="toggle" class="absolute -top-[30px] -left-[70px] bg-amber-200 rounded  text-black">
+              <ul>
+                <li class="px-5 hover:bg-amber-400" @click="handleUpdate">update</li>
+                <li class="px-5 hover:bg-amber-400" @click="handleDelete">delete</li>
+              </ul>
+            </div>
           </div>
-        </div>
+
+        </template>
       </div>
     </div>
   </CartFoodSlot>
@@ -57,22 +61,24 @@ const api = new ApiReponsitory(API_TABLE.LIST)
 export default {
   name: "CartComp.vue",
   components: {CartFoodSlot},
+
   props: {
     id: String,
     image: String,
     name: String,
     description: String,
-    btn: String
+    btn: String,
+    role: String
   },
   data() {
     return {
-      toggle: false
+      toggle: false,
     }
   },
   methods: {
     handleUpdate() {
       this.toggle = !this.toggle;
-      this.$store.dispatch(prefix('informationStore', INFORMATION.MODEL.SET), this.id);
+      this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), this.id);
       showModal(MODAL.cart_update);
     },
     async handleDelete() {

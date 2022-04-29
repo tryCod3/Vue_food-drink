@@ -35,18 +35,17 @@ const routes = [
         name: "cart-detail",
         props: true,
         component: () => import(/* webpackChunkName: "location-item-detail-id"*/ '@/view/CartDetailView')
-    }
-    ,
+    },
     {
         path: "/cart/add",
         name: "cart-add",
         component: () => import(/* webpackChunkName: "cart-add"*/ '@/view/FormCartView')
     },
-    // {
-    //     path: "/cart/update/:id",
-    //     name: "cart-update",
-    //     component: () => import(/* webpackChunkName: "cart-update"*/ '@/components/Modal/ModalCartUpdate')
-    // },
+    {
+        path: "/user/login",
+        name: "user-login",
+        component: () => import(/* webpackChunkName: "user-login"*/ '@/view/FormUserView')
+    },
 ]
 
 const router = new Router({

@@ -125,7 +125,7 @@ export default {
     },
     async handleUpdateCart() {
       await api.update(this.food);
-      await this.$store.dispatch(prefix('informationStore', INFORMATION.MODEL.SET), '');
+      await this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), '');
       turnOffModal(MODAL.cart_update);
       this.$swal({
         title: 'Update success!',
@@ -150,7 +150,7 @@ export default {
       set() {
       },
       get() {
-        return this.$store.getters[prefix('informationStore', INFORMATION.MODEL.GET)]
+        return this.$store.getters[prefix('informationStore', INFORMATION.ID_MODEL.GET)]
       }
     },
   },

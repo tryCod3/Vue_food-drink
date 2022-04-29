@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     turnOnModalUpdate() {
-      this.$store.dispatch(prefix('informationStore', INFORMATION.MODEL.SET), '')
+      this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), '')
       turnOffModal(this.idClass);
     }
   },

@@ -18,7 +18,7 @@ export const informationStore = {
             return state.location;
         }, [INFORMATION.ITEM.GET](state) {
             return state.item;
-        }, [INFORMATION.MODEL.GET](state) {
+        }, [INFORMATION.ID_MODEL.GET](state) {
             return state.idModel
         }
     }, mutations: {
@@ -32,7 +32,7 @@ export const informationStore = {
             }
         }, [INFORMATION.ITEM.SET](state, payload) {
             state.item = coverRoute(payload);
-        }, [INFORMATION.MODEL.SET](state, payload) {
+        }, [INFORMATION.ID_MODEL.SET](state, payload) {
             state.idModel = payload;
         }
     }, actions: {
@@ -45,8 +45,8 @@ export const informationStore = {
         [INFORMATION.ITEM.SET]({commit}, payload) {
             commit(INFORMATION.ITEM.SET, payload);
         },
-        [INFORMATION.MODEL.SET]({commit}, payload) {
-            commit(INFORMATION.MODEL.SET, payload);
+        [INFORMATION.ID_MODEL.SET]({commit}, payload) {
+            commit(INFORMATION.ID_MODEL.SET, payload);
         }
     }
 }

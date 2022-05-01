@@ -101,7 +101,7 @@
 
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 import {API_TABLE} from "@/constan/api";
-import {genId, prefix} from "@/util";
+import {genId, prefix, toast} from "@/util";
 import USER from "@/constan/user";
 
 const api = new ApiReponsitory(API_TABLE.ACCOUNT)
@@ -142,13 +142,7 @@ export default {
       } else {
         await this.$store.dispatch(prefix('userStore', USER.MODEL.SET), api.data[0])
         this.$router.go(-1);
-        this.$toasted.show(this.$i18n.t('user.message.success', {username: this.user.name}), {
-          delay: 1000,
-          duration: 3000,
-          icon: 'check',
-          position: 'top-right',
-          theme: 'bubble',
-        })
+        toast(this.$i18n.t('user.message.success', {username: this.user.name}))
       }
     },
     flip() {

@@ -1,5 +1,5 @@
 import {uuid} from 'vue-uuid';
-
+import app from '@/main'
 
 export const log = function (name) {
 
@@ -11,11 +11,21 @@ export const log = function (name) {
 }
 
 export const genId = (pre) => {
-    return prefix(pre, uuid.v1());
+    return pre + uuid.v1();
 }
 
 export const prefix = (pre, action) => {
     return `${pre}/${action}`
+}
+
+export const toast = (message) => {
+    app.$toasted.show(message, {
+        delay: 1000,
+        duration: 3000,
+        icon: 'check',
+        position: 'top-right',
+        theme: 'bubble',
+    })
 }
 
 function convertViToEn(str, toUpperCase = false) {

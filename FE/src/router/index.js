@@ -46,6 +46,11 @@ const routes = [
         name: "user-login",
         component: () => import(/* webpackChunkName: "user-login"*/ '@/view/FormUserView')
     },
+    {
+        path: "/user/cart",
+        name: "user-cart",
+        component: () => import(/* webpackChunkName: "user-login"*/ '@/view/UserCartView')
+    },
 ]
 
 const router = new Router({

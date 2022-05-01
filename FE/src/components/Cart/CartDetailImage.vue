@@ -1,7 +1,7 @@
 <template>
 
   <div class="basis-3/4">
-    <img alt="product image" class="p-2 w-full rounded-t-lg object-contain" :src=image>
+    <img :src=image alt="product image" class="p-2 w-full rounded-t-lg object-contain">
     <div class="px-5 pb-5">
       <a href="#">
         <h1 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white truncate ...">{{ name }}</h1>
@@ -38,8 +38,11 @@
       </div>
       <div class="flex justify-between items-center">
         <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ price }}$</span>
-        <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-           href="#">{{ this.$i18n.t('cart.btnAdd') }}</a>
+        <button
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            @click="handleAddCart">
+          {{ this.$i18n.t('cart.btnAdd') }}
+        </button>
       </div>
     </div>
 
@@ -48,6 +51,13 @@
 </template>
 
 <script>
+
+import {ApiReponsitory} from "@/api/ApiReponsitory";
+import {API_TABLE} from "@/constan/api";
+import {toast} from "@/util";
+
+const api = new ApiReponsitory(API_TABLE.CART)
+
 export default {
   name: "CartDetailImage",
   props: {
@@ -55,6 +65,56 @@ export default {
     description: String,
     price: String,
     image: String,
+  },
+  methods: {
+    async handleAddCart() {
+      const getId = localStorage.getItem("model") ? JSON.parse(localStorage.getItem("model"))?.id ?? '' : ''
+      const getCartId = this.$route.params.id
+      if (getId === '') {
+        await this.$router.push({name: 'user-login'})
+      } else {
+        await api.call('get', {id: getId})
+
+        if (api.data.length === 0) { // user chưa bao giờ mua hàng , hãy tạo nó
+          await api.add({
+            id: getId,
+            lists: [{
+              idCart: getCartId,
+              count: 1
+            }]
+          })
+        } else {
+
+          // get db Cart with id user , and update count
+          const data = api.data[0]
+
+          let hasItem = false
+
+          data.lists = data.lists.reduce((arr, current) => {
+            if (current.idCart === getCartId) {
+              hasItem = true
+              arr.push({idCart: current.idCart, count: current.count + 1});
+            } else {
+              arr.push(current)
+            }
+            return arr
+          }, [])
+          console.log(data.lists)
+
+          if (!hasItem) { // chưa có mặt hàng này trong giỏ hàng của user
+            data.lists.push({
+              idCart: getCartId,
+              count: 1
+            })
+          }
+
+          // updaet db
+          await api.update(data)
+        }
+
+        toast("Thêm danh mặt hàng thành công!")
+      }
+    }
   }
 }
 </script>

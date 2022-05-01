@@ -28,8 +28,31 @@ export const toast = (message) => {
     })
 }
 
+const mapper = (key) => {
+    key = key.toLowerCase()
+    if (key === 'food') {
+        return 'do-an'
+    }
+    if (key === 'fresh') {
+        return 'thuc-pham'
+    }
+    if (key === 'beer') {
+        return 'bia'
+    }
+    if (key === 'flower') {
+        return 'hoa'
+    }
+    if (key === 'mart') {
+        return 'sieu-thi'
+    }
+    if (key === 'medicine') {
+        return 'thuoc'
+    }
+    return key;
+}
+
 function convertViToEn(str, toUpperCase = false) {
-    str = str.toLowerCase();
+    str = mapper(str)
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
     str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
     str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
@@ -42,6 +65,7 @@ function convertViToEn(str, toUpperCase = false) {
     str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
     return toUpperCase ? str.toUpperCase() : str;
 }
+
 
 export const coverRoute = function (name) {
     const newName = convertViToEn(name);

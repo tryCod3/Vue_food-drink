@@ -55,7 +55,6 @@ export default {
   methods: {
     async getApiDetail() {
       const params = {signLocation: this.paramLocation, id: this.$route.params.id}
-      console.log(params)
       await api.call('get', params);
       await api._filter(food => food.tags.includes(this.paramTagItem))
       if (api.data.length > 0) {

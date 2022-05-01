@@ -169,7 +169,7 @@ export default {
         data.lists = data.lists.filter(food => food.idCart !== id)
         await api.update(data)
         this.$swal({
-          title: "xóa thành công!",
+          title: 'Success it!',
         }).then(() => window.location.reload())
       }
     }

@@ -39,7 +39,10 @@ const routes = [
     {
         path: "/cart/add",
         name: "cart-add",
-        component: () => import(/* webpackChunkName: "cart-add"*/ '@/view/FormCartView')
+        component: () => import(/* webpackChunkName: "cart-add"*/ '@/view/FormCartView'),
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/user/login",
@@ -49,7 +52,10 @@ const routes = [
     {
         path: "/user/cart",
         name: "user-cart",
-        component: () => import(/* webpackChunkName: "user-login"*/ '@/view/UserCartView')
+        component: () => import(/* webpackChunkName: "user-login"*/ '@/view/UserCartView'),
+        meta: {
+            requiresAuth: true,
+        },
     },
 ]
 
@@ -59,7 +65,15 @@ const router = new Router({
     routes
 })
 
-// router.beforeEach((to, from, next) => {
-//
-// });
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        const data = localStorage.getItem('model') ? localStorage.getItem('model') : ''
+        if (data === '')
+            next({name: 'user-login'})
+        else
+            next()
+    } else {
+        next()
+    }
+});
 export default router

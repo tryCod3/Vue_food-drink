@@ -3,7 +3,7 @@
     <div class="mt-[110px] w-[400px] h-[200px] flex items-center justify-center ">
       <img alt="imag"
            class="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
-           :src="food.image ? food.image : 'https://cdn2.momjunction.com/wp-content/uploads/2020/12/Interesting-Food-Trivia-Questions-For-Kids-With-Answers-910x1024.jpg'">
+           :src="food.image !== '' ? food.image : 'https://cdn2.momjunction.com/wp-content/uploads/2020/12/Interesting-Food-Trivia-Questions-For-Kids-With-Answers-910x1024.jpg'">
     </div>
     <div class="w-full">
       <div class="px-6 py-4">
@@ -116,28 +116,30 @@ export default {
   methods: {
     async handleAddCart() {
       this.createAt = Date.now();
-      this.id = genId("list-")
+      this.food.id = genId("list-")
+      this.food.createBy = this.idUser
       await api.add(this.food)
       this.$swal({
-        title: 'Add success!',
+        title: 'Add cart success!',
         delay: 1000,
       })
     },
     async handleUpdateCart() {
       await api.update(this.food);
       await this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), '');
+      await this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.ACTION), '');
       turnOffModal(MODAL.cart_update);
       this.$swal({
-        title: 'Update success!',
+        title: 'Update cart success!',
         delay: 1000,
       }).then(() => window.location.reload())
     }
     ,
     async getDataApi() {
-      if (this.isUpdate && this.id !== '') {
+      console.log(this.action, this.id)
+      if (this.action === 'UPDATE_CART' && this.isUpdate && this.id !== '') {
         const params = {id: this.id};
         await api.call('get', params);
-        console.log(api.data[0])
         this.food = api.data[0];
       }
     }
@@ -146,6 +148,9 @@ export default {
     }
   },
   computed: {
+    idUser() {
+      return localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model')).id : ''
+    },
     id: {
       set() {
       },
@@ -153,6 +158,13 @@ export default {
         return this.$store.getters[prefix('informationStore', INFORMATION.ID_MODEL.GET)]
       }
     },
+    action: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('informationStore', INFORMATION.ID_MODEL.ACTION)]
+      }
+    }
   },
   watch: {
     id: {

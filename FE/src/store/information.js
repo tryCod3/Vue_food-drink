@@ -10,7 +10,8 @@ export const informationStore = {
             name: coverRoute("Đà Nẵng"),
             count: 9923
         }, item: 'do-an',
-        idModel: ''
+        idModel: '',
+        action: ''
     }, getters: {
         [INFORMATION.LANG.GET](state) {
             return state.lang;
@@ -20,6 +21,8 @@ export const informationStore = {
             return state.item;
         }, [INFORMATION.ID_MODEL.GET](state) {
             return state.idModel
+        }, [INFORMATION.ID_MODEL.ACTION](state) {
+            return state.action
         }
     }, mutations: {
         [INFORMATION.LANG.SET](state, payload) {
@@ -34,6 +37,9 @@ export const informationStore = {
             state.item = coverRoute(payload);
         }, [INFORMATION.ID_MODEL.SET](state, payload) {
             state.idModel = payload;
+        },
+        [INFORMATION.ID_MODEL.ACTION](state, payload) {
+            state.action = payload
         }
     }, actions: {
         [INFORMATION.LANG.SET]({commit}, payload) {
@@ -47,6 +53,9 @@ export const informationStore = {
         },
         [INFORMATION.ID_MODEL.SET]({commit}, payload) {
             commit(INFORMATION.ID_MODEL.SET, payload);
+        },
+        [INFORMATION.ID_MODEL.ACTION]({commit}, payload) {
+            commit(INFORMATION.ID_MODEL.ACTION, payload);
         }
     }
 }

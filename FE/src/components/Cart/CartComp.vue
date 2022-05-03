@@ -31,8 +31,7 @@
           </button>
         </router-link>
         <template>
-
-          <div v-if="role === 'admin'" class="relative">
+          <div v-if="checkThreeDot()" class="relative">
             <button class="text-black text-3xl hover:cursor-pointer" @click="toggle = !toggle">...</button>
             <div v-show="toggle" class="absolute -top-[30px] -left-[70px] bg-amber-200 rounded  text-black">
               <ul>
@@ -41,7 +40,6 @@
               </ul>
             </div>
           </div>
-
         </template>
       </div>
     </div>
@@ -68,7 +66,8 @@ export default {
     name: String,
     description: String,
     btn: String,
-    role: String
+    role: String,
+    createBy: String
   },
   data() {
     return {
@@ -76,9 +75,13 @@ export default {
     }
   },
   methods: {
+    checkThreeDot() {
+      return this.role === 'admin' || this.createBy === this.idUser
+    },
     handleUpdate() {
       this.toggle = !this.toggle;
       this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), this.id);
+      this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.ACTION), "UPDATE_CART");
       showModal(MODAL.cart_update);
     },
     async handleDelete() {
@@ -104,6 +107,9 @@ export default {
     }
   },
   computed: {
+    idUser() {
+      return localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model')).id : ''
+    },
     paramLocation: {
       set() {
       },

@@ -16,6 +16,19 @@ const routes = [
 
     },
     {
+        path: "/admin",
+        name: "admin",
+        component: () =>
+            import(
+                /* webpackChunkName: "admin"*/
+                '@/view/PageAdminView'
+                ),
+        meta: {
+            requiresAuth: true,
+            requiresAdmin: true
+        },
+    },
+    {
         path: "/home/:location/:tagItem",
         name: "location-item",
         component: () =>
@@ -67,13 +80,16 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        const data = localStorage.getItem('model') ? localStorage.getItem('model') : ''
+        const data = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model')) : ''
         if (data === '')
             next({name: 'user-login'})
-        else
-            next()
-    } else {
-        next()
+        else {
+            if (data.role === 'admin' && to.name === 'admin') {
+                next()
+            }
+        }
     }
+    next()
+
 });
 export default router

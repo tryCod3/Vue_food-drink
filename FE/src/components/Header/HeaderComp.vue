@@ -6,6 +6,9 @@
             alt="icon shope"
             class="laptop:pr-20"
             src="@/assets/image/shopeefoodvn.png"
+            @click="()=>{
+              this.$router.push({name: 'home'})
+            }"
         />
       </div>
       <div class="relative flex flex-col self-center header__location">
@@ -96,10 +99,27 @@
     </div>
     <div class="flex justify-center">
       <div class="absolute right-[150px] top-2">
-        <img alt="user icon" src="@/assets/image/user.png"/>
+        <img alt="user icon" src="@/assets/image/user.png"
+             @click="() => { if(['admin' , 'fooder'].includes(role)) this.showSetting = !this.showSetting}"/>
         <div :class="role === 'admin' ? 'text-red-600' : 'text-teal-600'" class="text-center w-full">
           {{ name }}
         </div>
+        <template v-if="['admin' , 'fooder'].includes(role) && showSetting">
+          <div class="absolute">
+            <div class="absolute top-[10px] left-[9px] bg-amber-200 rounded  text-black">
+              <ul>
+                <li @click="handleRole(role)" class="px-5 hover:bg-amber-400 hover:cursor-pointer">{{
+                    role === 'admin' ? 'setting' : 'addCart'
+                  }}
+                </li>
+                <li v-if="role !== '' && role !== 'admin'" @click="handleRole('userCart')"
+                    class="px-5 hover:bg-amber-400 hover:cursor-pointer">
+                  userCard
+                </li>
+              </ul>
+            </div>
+          </div>
+        </template>
       </div>
       <select v-model="langApp" class="laptop:absolute top-5 right-2 hover:cursor-pointer">
         <option value="vn">Tiếng Việt</option>
@@ -123,13 +143,16 @@ export default {
   beforeUpdate() {
     this.name = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.user ?? '' : ''
     this.role = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
+    this.id = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.id ?? '' : ''
   },
   data: function () {
     return {
       showToggleLocation: false,
+      showSetting: false,
       modalSearch: MODAL.search,
       name: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.user ?? '' : '',
       role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : '',
+      id: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.id ?? '' : '',
       toggleLocations: [
         {
           name: "Đà Nẵng",
@@ -210,6 +233,8 @@ export default {
       localStorage.setItem('model', '')
       this.name = ''
       this.role = ''
+      this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), '')
+      this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.ACTION), '')
       if (this.$route.name !== 'home')
         this.$router.push({name: 'home'});
       this.$toasted.show(this.$i18n.t('user.message.logout'), {
@@ -219,7 +244,21 @@ export default {
         position: 'top-right',
         theme: 'bubble',
       })
-    }
+    },
+    handleRole(action) {
+      this.showSetting = !this.showSetting
+
+      if (action === 'userCart') {
+        this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.SET), this.id)
+        this.$store.dispatch(prefix('informationStore', INFORMATION.ID_MODEL.ACTION), 'USER_CART')
+        this.$router.push({name: 'user-cart'})
+      } else if (action === 'fooder') {
+        this.$router.push({name: 'cart-add'})
+      } else {
+        this.$router.push({name: 'admin'})
+      }
+    },
+
   },
 
 }

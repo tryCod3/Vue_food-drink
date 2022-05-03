@@ -5,7 +5,6 @@ export const userStore = {
     namespaced: true,
     getters: {
         [USER.MODEL.GET]() {
-            console.log("model = ", JSON.parse(localStorage.getItem('model')))
             return JSON.parse(localStorage.getItem('model'));
         },
     },
@@ -16,7 +15,6 @@ export const userStore = {
     },
     actions: {
         [USER.MODEL.SET]({commit}, payload) {
-            console.log("SETTTTTTTTTTTTTTT")
             commit(USER.MODEL.SET, payload);
         },
     }

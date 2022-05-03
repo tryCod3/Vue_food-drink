@@ -12,6 +12,7 @@ const INFORMATION = {
         GET: 'GET_ITEM'
     },
     ID_MODEL: {
+        ACTION: 'ACTION_ID_MODEL',
         SET: "SET_ID_MODEL",
         GET: "GET_ID_MODEL"
     }

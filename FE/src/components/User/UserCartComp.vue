@@ -18,12 +18,12 @@
           <tbody>
           <UserCartItem
               v-for="cart in listCart"
-              :key="cart.data.id"
               :id="cart.data.id"
+              :key="cart.data.id"
+              :count="cart.count"
               :image="cart.data.image"
               :name="cart.data.name"
               :price="cart.data.price"
-              :count="cart.count"
               @caclTotal="caclTotal"
               @handelRemoveItem="handelRemoveItem"
           />
@@ -124,6 +124,8 @@
 import UserCartItem from "@/components/User/UserCartItem";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 import {API_TABLE} from "@/constan/api";
+import {prefix} from "@/util";
+import INFORMATION from "@/constan/information";
 
 const api = new ApiReponsitory(API_TABLE.CART)
 const api_list = new ApiReponsitory(API_TABLE.LIST)
@@ -133,25 +135,42 @@ export default {
   components: {UserCartItem},
   data() {
     return {
-      idUser: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.id ?? '' : '',
       listCart: [],
       total: '0',
       res: '0'
     }
   },
-  async created() {
-    await api.call('get', {id: this.idUser})
-    if (api.data.length > 0) {
-      let dataCart = api.data[0]
-      let total = 0
-      for (let i = 0; i < dataCart.lists.length; i++) {
-        await api_list.call('get', {id: dataCart.lists[i].idCart})
-        if (api_list.data.length > 0) {
-          this.listCart.push({data: api_list.data[0], count: dataCart.lists[i].count})
-          total += (+api_list.data[0].price * dataCart.lists[i].count)
-        }
+  computed: {
+    idUser: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('informationStore', INFORMATION.ID_MODEL.GET)]
       }
-      this.caclTotal(total)
+    },
+    action: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('informationStore', INFORMATION.ID_MODEL.ACTION)]
+      }
+    },
+  },
+  async created() {
+    if (this.action === 'USER_CART' && this.idUser !== '') {
+      await api.call('get', {id: this.idUser})
+      if (api.data.length > 0) {
+        let dataCart = api.data[0]
+        let total = 0
+        for (let i = 0; i < dataCart.lists.length; i++) {
+          await api_list.call('get', {id: dataCart.lists[i].idCart})
+          if (api_list.data.length > 0) {
+            this.listCart.push({data: api_list.data[0], count: dataCart.lists[i].count})
+            total += (+api_list.data[0].price * dataCart.lists[i].count)
+          }
+        }
+        this.caclTotal(total)
+      }
     }
   }
   ,
@@ -175,7 +194,7 @@ export default {
     }
   }
 }
-</script>s
+</script>
 
 <style scoped>
 

@@ -32,6 +32,7 @@
                     :image="food.image"
                     :name="food.name"
                     :role="role"
+                    :createBy="food.createBy"
           />
         </div>
       </div>

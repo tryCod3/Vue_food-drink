@@ -7,6 +7,7 @@
           :description=food.description
           :image=food.image
           :name=food.name
+          :createBy="food.createBy"
       >
       </CartComp>
     </div>

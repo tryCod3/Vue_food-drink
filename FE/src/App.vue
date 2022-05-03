@@ -2,6 +2,7 @@
   <div id="app">
     <ModalSearch/>
     <ModalCartUpdate/>
+    <ModalUserUpdate/>
     <HeaderView/>
     <transition name="fade" mode="out-in">
       <router-view/>
@@ -14,10 +15,11 @@
 import HeaderView from "@/view/HeaderView";
 import ModalSearch from "@/components/Modal/ModalSearch";
 import ModalCartUpdate from "@/components/Modal/ModalCartUpdate";
+import ModalUserUpdate from "@/components/Modal/ModalUserUpdate";
 
 export default {
   name: "App",
-  components: {ModalCartUpdate, HeaderView, ModalSearch},
+  components: {ModalUserUpdate, ModalCartUpdate, HeaderView, ModalSearch},
 };
 </script>
 

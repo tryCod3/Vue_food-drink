@@ -156,25 +156,27 @@ export default {
       }
     },
   },
-  async created() {
-    if (this.action === 'USER_CART' && this.idUser !== '') {
-      await api.call('get', {id: this.idUser})
-      if (api.data.length > 0) {
-        let dataCart = api.data[0]
-        let total = 0
-        for (let i = 0; i < dataCart.lists.length; i++) {
-          await api_list.call('get', {id: dataCart.lists[i].idCart})
-          if (api_list.data.length > 0) {
-            this.listCart.push({data: api_list.data[0], count: dataCart.lists[i].count})
-            total += (+api_list.data[0].price * dataCart.lists[i].count)
-          }
-        }
-        this.caclTotal(total)
-      }
-    }
-  }
-  ,
+  created() {
+    this.loadApi()
+  },
   methods: {
+    async loadApi() {
+      if (this.action === 'USER_CART' && this.idUser !== '') {
+        await api.call('get', {id: this.idUser})
+        if (api.data.length > 0) {
+          let dataCart = api.data[0]
+          let total = 0
+          for (let i = 0; i < dataCart.lists.length; i++) {
+            await api_list.call('get', {id: dataCart.lists[i].idCart})
+            if (api_list.data.length > 0) {
+              this.listCart.push({data: api_list.data[0], count: dataCart.lists[i].count})
+              total += (+api_list.data[0].price * dataCart.lists[i].count)
+            }
+          }
+          this.caclTotal(total)
+        }
+      }
+    },
     caclTotal(data) {
       this.total = ((+this.total) + data).toFixed(3)
       this.res = this.total - (5.00 + 2.25)
@@ -182,14 +184,17 @@ export default {
       this.res = this.res.toFixed(3)
     },
     async handelRemoveItem(id) {
-      await api.call('get', this.idUser)
+      await api.call('get', {id: this.idUser})
+      console.log(this.idUser, id)
       if (api.data.length > 0) {
         const data = api.data[0];
         data.lists = data.lists.filter(food => food.idCart !== id)
         await api.update(data)
+        this.listCart = this.listCart.filter(card => card.data.id !== id)
         this.$swal({
           title: 'Success it!',
-        }).then(() => window.location.reload())
+          delay: 1000
+        })
       }
     }
   }

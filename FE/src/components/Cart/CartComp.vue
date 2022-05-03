@@ -51,10 +51,7 @@ import CartFoodSlot from "@/slot/CartFoodSlot";
 import {prefix, showModal} from "@/util";
 import MODAL from "@/constan/modal";
 import INFORMATION from "@/constan/information";
-import {ApiReponsitory} from "@/api/ApiReponsitory";
-import {API_TABLE} from "@/constan/api";
 
-const api = new ApiReponsitory(API_TABLE.LIST)
 
 export default {
   name: "CartComp.vue",
@@ -97,11 +94,7 @@ export default {
         cancelButtonText: 'No, cancel!',
       }).then(async res => {
         if (res.isConfirmed) {
-          await api.delete(this.id);
-          this.$swal({
-            title: 'Success it!',
-            delay: 1000
-          }).then(() => window.location.reload())
+          this.$emit('deleteCart', this.id)
         }
       })
     }

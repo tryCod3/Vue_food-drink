@@ -8,6 +8,8 @@
           :image=food.image
           :name=food.name
           :createBy="food.createBy"
+          :role="role"
+          @deleteCart="deleteCart"
       >
       </CartComp>
     </div>
@@ -31,7 +33,8 @@ export default {
   },
   data() {
     return {
-      listData: []
+      listData: [],
+      role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
     }
   },
   methods: {
@@ -44,6 +47,14 @@ export default {
       await api.call('get', params);
       await api._filter(food => food.tags.includes(this.paramTagItem))
       this.listData = api.data;
+    },
+    async deleteCart(id) {
+      await api.delete(id);
+      this.listData = this.listData.filter(food => food.id !== id);
+      this.$swal({
+        title: 'Success it!',
+        delay: 1000
+      })
     }
   },
   computed: {

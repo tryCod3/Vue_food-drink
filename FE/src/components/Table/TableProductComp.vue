@@ -128,10 +128,11 @@ export default {
       }).then(async res => {
         if (res.isConfirmed) {
           await api.delete(id);
+          this.listProduct = this.listProduct.filter(product => product.id !== id)
           this.$swal({
             title: 'Success it!',
             delay: 1000
-          }).then(() => window.location.reload())
+          })
         }
       })
     },

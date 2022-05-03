@@ -104,8 +104,10 @@ export default {
           const arr = []
           for (let j = 0; j < api.data[i].lists.length; j++) {
             await api_list.call('get', {id: api.data[i].lists[j].idCart})
-            api_list.data[0].createBy = api_user.data[0].user
-            arr.push(api_list.data[0])
+            if (api_list.data.length > 0) {
+              api_list.data[0].createBy = api_user.data[0].user
+              arr.push(api_list.data[0])
+            }
           }
           this.listUser.push({idCart: api.data[i].id, data: api_user.data[0], count: sumCart, lists: arr})
         }
@@ -124,10 +126,11 @@ export default {
       }).then(async res => {
         if (res.isConfirmed) {
           await api.delete(id);
+          this.listUser = this.listUser.filter(q => q.idCart !== id)
           this.$swal({
             title: 'Success it!',
             delay: 1000
-          }).then(() => window.location.reload())
+          })
         }
       })
     },

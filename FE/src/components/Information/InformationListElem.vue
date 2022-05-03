@@ -33,6 +33,7 @@
                     :name="food.name"
                     :role="role"
                     :createBy="food.createBy"
+                    @deleteCart="deleteCart"
           />
         </div>
       </div>
@@ -72,6 +73,14 @@ export default {
       await api.call('get', params)
       await api._filter(food => food.tags.includes(this.paramTagItem))
       this.listFood = api.data;
+    },
+    async deleteCart(id) {
+      await api.delete(id);
+      this.listFood = this.listFood.filter(food => food.id !== id);
+      this.$swal({
+        title: 'Success it!',
+        delay: 1000
+      })
     }
   },
   computed: {

@@ -70,6 +70,11 @@ const routes = [
             requiresAuth: true,
         },
     },
+    {
+        path: "*",
+        name: '404notFound',
+        component: () => import(/* webpackChunkName: "user-login"*/ '@/view/NotFoundView')
+    }
 ]
 
 const router = new Router({
@@ -84,8 +89,11 @@ router.beforeEach((to, from, next) => {
         if (data === '')
             next({name: 'user-login'})
         else {
-            if (data.role === 'admin' && to.name === 'admin') {
-                next()
+            if (to.name === 'admin') {
+                if (data.role === 'admin')
+                    next()
+                else
+                    next({name: "404notFound"})
             }
         }
     }

@@ -8,6 +8,7 @@
           <option value="">-option-</option>
           <option value="price-desc">price desc</option>
           <option value="price-asc">price asc</option>
+          <option value="name-az">name alpha a-z</option>
         </select>
       </div>
       <hr class="my-4"/>
@@ -47,6 +48,9 @@ export default {
           break;
         case 'price-desc':
           this.$router.push({name: 'location-item-watch', query: {_sort: 'price', _order: 'desc'}});
+          break;
+        case 'name-az':
+          this.$router.push({name: 'location-item-watch', query: {_sort: 'name', _order: 'asc'}});
           break;
         default:
           this.$router.push({name: 'location-item-watch'}).catch(() => {

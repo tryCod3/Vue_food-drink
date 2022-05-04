@@ -99,7 +99,6 @@ export default {
             }
             return arr
           }, [])
-          console.log(data.lists)
 
           if (!hasItem) { // chưa có mặt hàng này trong giỏ hàng của user
             data.lists.push({

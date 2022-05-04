@@ -1,6 +1,6 @@
 <template>
   <ShowListSlot>
-    <div v-for="food in listData" :key="food.id" slot="show-list">
+    <div v-for="food in listData" :key="food.id" slot="show-list" class="h-full">
       <CartComp
           :id="food.id"
           :btn="btnDetail"

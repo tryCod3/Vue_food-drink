@@ -1,7 +1,7 @@
 <template>
   <div
       :class="style"
-      class="flex justify-center border hover:bg-black-500 hover:shadow-lgs "
+      class="h-full flex justify-center border hover:bg-black-500 hover:shadow-lgs "
   >
     <div class="rounded-lg relative flex flex-col justify-between shadow-lg bg-white h-full max-w-sm">
       <slot name="cart.image"></slot>

@@ -101,7 +101,7 @@
     {
       "createBy": "account-9711f0b0-c8f9-11ec-9992-1dd4cd88b966",
       "image": "https://live.staticflickr.com/65535/50435209523_996bc62ff2_b.jpg",
-      "name": "Cá lóc",
+      "name": "Cá lóc 2",
       "description": "Quán Mở cửa từ 06:00 - 23:59 , T2 - T7",
       "location": "44/7 Song Đôi , TP Đà Nẵng",
       "signLocation": "da-nang",
@@ -185,18 +185,15 @@
   "location": [
     {
       "id": "location-1",
-      "sign": "da-nang",
-      "location": "12 Nguyễn Trãi , TP Đà Nẵng"
+      "sign": "Đà Nẵng"
     },
     {
       "id": "location-2",
-      "sign": "ho-chi-minh",
-      "location": "13/7 Bình Thạnh , Phú tài , TP Hồ Chí Minh"
+      "sign": "Hồ Chí Minh"
     },
     {
       "id": "location-3",
-      "sign": "ha-noi",
-      "location": "33/4 Hồ Tây , TP Hà Nội"
+      "sign": "Hà Nội"
     }
   ],
   "cart": [

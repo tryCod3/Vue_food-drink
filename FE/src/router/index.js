@@ -71,6 +71,14 @@ const routes = [
         },
     },
     {
+        path: "/user/cart/feedback/:id",
+        name: "feed-back",
+        component: () => import(/* webpackChunkName: "user-login"*/ '@/view/FeedBackUserView'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
         path: "*",
         name: '404notFound',
         component: () => import(/* webpackChunkName: "user-login"*/ '@/view/NotFoundView')

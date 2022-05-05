@@ -4,7 +4,7 @@
         slot="cart.image"
         :src=image
         alt="icon avatar"
-        class="rounded-t-lg w-full   hover:skew-y-3 delay-150 duration-300 ease-in-out"
+        class="rounded-t-lg w-full basis-1/2 h-1/2  hover:skew-y-3 delay-150 duration-300 ease-in-out"
     />
     <div slot="cart.information">
       <h5

@@ -111,6 +111,7 @@
               shadow
               hover:bg-blue-600
             "
+              @click="handlePay"
           >
             Proceed to Checkout
           </button>
@@ -173,15 +174,48 @@ export default {
               total += (+api_list.data[0].price * dataCart.lists[i].count)
             }
           }
-          this.caclTotal(total)
+          this.caclTotal({price: total, id: ''})
         }
       }
     },
-    caclTotal(data) {
-      this.total = ((+this.total) + data).toFixed(3)
+    async handlePay() {
+      const model = {
+        id: this.idUser,
+        lists: this.listCart.reduce((arr, current) => {
+          arr.push({'idCart': current.data.id, 'count': current.count})
+          return arr;
+        }, [])
+      }
+      await api.update(model);
+      this.$swal({
+        title: 'Bạn Đã Thanh Toán Thành Công!?',
+        text: "hãy chia sẻ cảm nhận của bạn!",
+        type: 'success',
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: '#333',
+        confirmButtonText: 'Share',
+        cancelButtonText: 'Back',
+      }).then(async res => {
+        if (res.isConfirmed) {
+          await this.$router.push({name: 'feed-back', params: {id: this.idUser}})
+        }
+      })
+    },
+    caclTotal(obj) {
+      const {price, id} = obj
+      this.total = ((+this.total) + price).toFixed(3)
       this.res = this.total - (5.00 + 2.25)
       if (this.res < 0) this.res = 0
       this.res = this.res.toFixed(3)
+      if (id !== '') {
+        for (let i = 0; i < this.listCart.length; i++) {
+          if (this.listCart[i].data.id === id) {
+            this.listCart[i].count += (price > 0 ? 1 : -1)
+            break
+          }
+        }
+      }
     },
     async handelRemoveItem(id) {
       await api.call('get', {id: this.idUser})

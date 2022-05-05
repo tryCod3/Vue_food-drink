@@ -105,17 +105,17 @@ export default {
     handleCount(action) {
       if (action === 'add') {
         this.countItem = String(+this.countItem + 1)
-        this.$emit("caclTotal", +this.price)
+        this.$emit("caclTotal", {price: +this.price, id: this.id})
       } else {
         if (this.countItem !== '1') {
           this.countItem = String(+this.countItem - 1)
-          this.$emit("caclTotal", -this.price)
+          this.$emit("caclTotal", {price: -this.price, id: this.id})
         } else
           toast("Mặt hàng không thể nhỏ hơn 1!")
       }
     },
     async handelRemoveItem() {
-      this.$emit('handelRemoveItem' , this.id)
+      this.$emit('handelRemoveItem', this.id)
     }
   }
 }

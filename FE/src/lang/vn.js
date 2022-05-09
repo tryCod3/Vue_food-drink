@@ -1,6 +1,5 @@
 export const vn = {
 
-
     header: {
         listsFood: [
             'Đồ ăn',
@@ -45,6 +44,7 @@ export const vn = {
         btnAdd: 'Thêm vào giỏ hàng',
         topic: ['pate', "xíu mại", 'thịt nướng', 'trứng', 'chả giò'],
         level: ['thừơng', 'trung bình', 'cay', 'rất cay'],
+        typeMoney: 'vnd'
     },
     user: {
         title: 'Chúng ta là thành viên Shoppe Food!',

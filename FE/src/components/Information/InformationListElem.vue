@@ -31,6 +31,7 @@
                     :description="food.description"
                     :image="food.image"
                     :name="food.name"
+                    :price="food.price"
                     :role="role"
                     :createBy="food.createBy"
                     @deleteCart="deleteCart"
@@ -46,57 +47,43 @@
 import CartComp from "@/components/Cart/CartComp";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 import {API_TABLE} from "@/constan/api";
+import {getRouteParams, remove} from "@/util/app";
+import {getAccount} from "@/util";
 
 const api = new ApiReponsitory(API_TABLE.LIST);
-console.log("create information")
 
 
 export default {
-  name: "informationlistElem",
-  beforeUpdate() {
-    // this.role = this.$store.getters[prefix('userStore', USER.MODEL.GET)]?.role
-    this.role = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
-  },
+  name: "informationListElem",
   components: {
     CartComp
+  },
+  beforeUpdate() {
+    this.role = getAccount() ? JSON.parse(getAccount()).role : ''
   },
   data() {
     return {
       listFood: [],
-      role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
+      role: getAccount() ? JSON.parse(getAccount()).role : ''
     }
   },
   methods: {
     async getApi() {
-      console.log("join get api")
       const params = {signLocation: this.paramLocation};
-      await api.call('get', params)
+      await api._call('get', params)
       await api._filter(food => food.tags.includes(this.paramTagItem))
       this.listFood = api.data;
     },
     async deleteCart(id) {
-      await api.delete(id);
-      this.listFood = this.listFood.filter(food => food.id !== id);
-      this.$swal({
-        title: 'Success it!',
-        delay: 1000
-      })
+      await remove(api, this.listFood, id).then(newList => this.listFood = newList)
     }
   },
   computed: {
-    paramLocation: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.location ?? 'da-nang'
-      }
+    paramLocation() {
+      return getRouteParams(this.$route, 'location')
     },
-    paramTagItem: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.tagItem ?? 'do-an'
-      }
+    paramTagItem() {
+      return getRouteParams(this.$route, 'tagItem')
     },
     priority() {
       return this.$i18n.t('information.priority')

@@ -86,7 +86,7 @@
 
 <script>
 
-import {coverRoute, genId, prefix, turnOffModal} from "@/util";
+import {coverRoute, genId, getAccount, prefix, turnOffModal} from "@/util";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 import {API_TABLE} from "@/constan/api";
 import INFORMATION from "@/constan/information";
@@ -136,10 +136,9 @@ export default {
     }
     ,
     async getDataApi() {
-      console.log(this.action, this.id)
       if (this.action === 'UPDATE_CART' && this.isUpdate && this.id !== '') {
         const params = {id: this.id};
-        await api.call('get', params);
+        await api._call('get', params);
         this.food = api.data[0];
       }
     }
@@ -149,7 +148,7 @@ export default {
   },
   computed: {
     idUser() {
-      return localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model')).id : ''
+      return getAccount() ? JSON.parse(getAccount()).id : ''
     },
     id: {
       set() {

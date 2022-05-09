@@ -90,7 +90,7 @@
       <div
           class="self-center border border-[#ee4d2d] text-[#ee4d2d] rounded header__login"
       >
-        <button class="btn" @click="['fooder', 'admin' , 'normal'].includes(role) ? handleLogout() : handleLogin()">
+        <button class="btn" @click="[keysRole].includes(role) ? handleLogout() : handleLogin()">
           {{ btnLogin }}
         </button>
       </div>
@@ -98,19 +98,19 @@
     <div class="flex justify-center">
       <div class="absolute right-[150px] top-2">
         <img alt="user icon" src="@/assets/image/user.png"
-             @click="() => { if(['admin' , 'fooder'].includes(role)) this.showSetting = !this.showSetting}"/>
+             @click="() => { if([roles.ADMIN , roles.FOODER].includes(role)) this.showSetting = !this.showSetting}"/>
         <div :class="role === 'admin' ? 'text-red-600' : 'text-teal-600'" class="text-center w-full">
           {{ name }}
         </div>
-        <template v-if="['admin' , 'fooder'].includes(role) && showSetting">
+        <template v-if="[roles.ADMIN , roles.FOODER].includes(role) && showSetting">
           <div class="absolute">
             <div class="absolute top-[10px] left-[9px] bg-amber-200 rounded  text-black">
               <ul>
                 <li @click="handleRole(role)" class="px-5 hover:bg-amber-400 hover:cursor-pointer">{{
-                    role === 'admin' ? 'setting' : 'addCart'
+                    role === roles.ADMIN ? 'setting' : 'addCart'
                   }}
                 </li>
-                <li v-if="role !== '' && role !== 'admin'" @click="handleRole('userCart')"
+                <li v-if="role !== '' && role !== roles.ADMIN" @click="handleRole('userCart')"
                     class="px-5 hover:bg-amber-400 hover:cursor-pointer">
                   userCard
                 </li>
@@ -130,35 +130,39 @@
 <script>
 
 import MODAL from "@/constan/modal";
-import {coverRoute, prefix, showModal} from "@/util";
+import {coverRoute, getAccount, prefix, showModal} from "@/util";
 import INFORMATION from "@/constan/information";
 import USER from "@/constan/user";
+import ROLE, {KEY_ROLE} from "@/constan/role";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 import {API_TABLE} from "@/constan/api";
+import {getRouteParams} from "@/util/app";
 
 const nameStore = 'informationStore'
 
 const api = new ApiReponsitory(API_TABLE.LOCATION)
 const api_list = new ApiReponsitory(API_TABLE.LIST)
 
+
 export default {
   name: "HeaderComp",
-  beforeUpdate() {
-    this.name = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.user ?? '' : ''
-    this.role = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
-    this.id = localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.id ?? '' : ''
-  },
   created() {
     this.loadApi()
+  },
+  beforeUpdate() {
+    this.name = getAccount() ? JSON.parse(getAccount()).user : ''
+    this.role = getAccount() ? JSON.parse(getAccount()).role : ''
+    this.id = getAccount() ? JSON.parse(getAccount()).id : ''
   },
   data: function () {
     return {
       showToggleLocation: false,
       showSetting: false,
       modalSearch: MODAL.search,
-      name: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.user ?? '' : '',
-      role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : '',
-      id: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.id ?? '' : '',
+      INSTANCE: this,
+      name: getAccount() ? JSON.parse(getAccount()).user : '',
+      role: getAccount() ? JSON.parse(getAccount()).role : '',
+      id: getAccount() ? JSON.parse(getAccount()).id : '',
       toggleLocations: [],
       style: {
         header: {
@@ -175,49 +179,12 @@ export default {
       },
     };
   },
-  computed: {
-    paramLocation: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.location ?? 'da-nang'
-      }
-    },
-    paramTagItem: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.tagItem ?? 'do-an'
-      }
-    },
-    typesFood() {
-      return this.$i18n.t('header.listsFood')
-    },
-    btnLogin() {
-      return this.role === '' ? this.$i18n.t('header.login') : this.$i18n.t('header.logout')
-    },
-    langApp: {
-      set(e) {
-        this.$store.dispatch(prefix(nameStore, INFORMATION.LANG.SET), e);
-      },
-      get() {
-        return this.$store.getters[prefix(nameStore, INFORMATION.LANG.GET)];
-      }
-    },
-    wellCome: {
-      set() {
-      },
-      get() {
-        return this.$store.getters[prefix('userStore', USER.MESSAGE.GET)]
-      }
-    },
-  },
   methods: {
     async loadApi() {
-      await api.call('get', {})
+      await api._call('get', {})
       const listLocation = api.data
       for (let i = 0; i < listLocation.length; i++) {
-        await api_list.call('get', {signLocation: coverRoute(listLocation[i].sign)})
+        await api_list._call('get', {signLocation: coverRoute(listLocation[i].sign)})
         if (api_list.data.length > 0)
           this.toggleLocations.push({name: listLocation[i].sign, count: api_list.data.length})
       }
@@ -270,6 +237,41 @@ export default {
         this.$router.push({name: 'cart-add'})
       } else {
         this.$router.push({name: 'admin'})
+      }
+    },
+  },
+  computed: {
+    paramLocation() {
+      return getRouteParams(this.$route, 'location')
+    },
+    paramTagItem() {
+      return getRouteParams(this.$route, 'tagItem')
+    },
+    keysRole() {
+      return KEY_ROLE;
+    },
+    roles() {
+      return ROLE
+    },
+    typesFood() {
+      return this.$i18n.t('header.listsFood')
+    },
+    btnLogin() {
+      return this.role === '' ? this.$i18n.t('header.login') : this.$i18n.t('header.logout')
+    },
+    langApp: {
+      set(e) {
+        this.$store.dispatch(prefix(nameStore, INFORMATION.LANG.SET), e);
+      },
+      get() {
+        return this.$store.getters[prefix(nameStore, INFORMATION.LANG.GET)];
+      }
+    },
+    wellCome: {
+      set() {
+      },
+      get() {
+        return this.$store.getters[prefix('userStore', USER.MESSAGE.GET)]
       }
     },
   },

@@ -18,6 +18,10 @@ export const prefix = (pre, action) => {
     return `${pre}/${action}`
 }
 
+export const convertVNtoUSD = (vnd) => {
+    return (vnd / 22.955).toFixed(3)
+}
+
 export const toast = (message) => {
     app.$toasted.show(message, {
         delay: 1000,
@@ -66,12 +70,10 @@ function convertViToEn(str, toUpperCase = false) {
     return toUpperCase ? str.toUpperCase() : str;
 }
 
-
 export const coverRoute = function (name) {
     const newName = convertViToEn(name);
     return newName.split(' ').join('-');
 }
-
 
 export const showModal = function (target) {
     const modal = document.getElementById(`${target}`)
@@ -83,4 +85,8 @@ export const turnOffModal = function (tagModal) {
     const modal = document.getElementById(`${tagModal}`)
     if (modal)
         modal.style.display = 'none'
+}
+
+export const getAccount = () => {
+    return localStorage.getItem('model')
 }

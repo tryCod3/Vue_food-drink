@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async loadApi() {
-      await api.call('get', {})
+      await api._call('get', {})
       this.listProduct = api.data
     },
     coverType(name) {

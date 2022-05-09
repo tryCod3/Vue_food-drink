@@ -43,6 +43,7 @@ export const en = {
         btnAdd: 'Add to cart',
         topic: ['pate', "xius ", 'meat', 'oppla', 'spring rolls'],
         level: ['normal', 'medium', 'hot', 'very hot'],
+        typeMoney: '$'
     }
     ,
     user: {

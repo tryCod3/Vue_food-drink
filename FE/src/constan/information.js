@@ -18,4 +18,5 @@ const INFORMATION = {
     }
 }
 
+
 export default INFORMATION;

@@ -116,7 +116,7 @@ export default {
   methods: {
     async handleUserRegister() {
       const params = {user: this.user.name, pass: this.user.pass, role: this.user.role};
-      await api.call('get', {user: this.user.name})
+      await api._call('get', {user: this.user.name})
       if (api.data.length > 0) {
         this.$swal({
           title: this.lang.message.errorHasAccount,
@@ -133,7 +133,7 @@ export default {
     },
     async handleUserLogin() {
       const params = {user: this.user.name, pass: this.user.pass}
-      await api.call('get', params)
+      await api._call('get', params)
       if (api.data.length === 0) {
         this.$swal({
           title: this.lang.message.error,

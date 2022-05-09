@@ -1,7 +1,7 @@
 <template>
   <section>
     <div
-        class="overflow-auto w-screen h-full fixed flex justify-center top-[70px] w-full  z-0   container__cartdetail"
+        class="overflow-auto w-screen h-full fixed flex  ml-[155px] top-[70px] w-full  z-0   container__cartdetail"
     >
       <CartDetailComp
       />

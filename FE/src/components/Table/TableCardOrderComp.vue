@@ -94,16 +94,16 @@ export default {
   },
   methods: {
     async loadApi() {
-      await api.call('get', {})
+      await api._call('get', {})
       for (let i = 0; i < api.data.length; i++) {
-        await api_user.call('get', {id: api.data[i].id})
+        await api_user._call('get', {id: api.data[i].id})
         const sumCart = api.data[i].lists.reduce((sum, current) => {
           return sum + current.count;
         }, 0);
         if (api_user.data.length > 0) {
           const arr = []
           for (let j = 0; j < api.data[i].lists.length; j++) {
-            await api_list.call('get', {id: api.data[i].lists[j].idCart})
+            await api_list._call('get', {id: api.data[i].lists[j].idCart})
             if (api_list.data.length > 0) {
               api_list.data[0].createBy = api_user.data[0].user
               arr.push(api_list.data[0])

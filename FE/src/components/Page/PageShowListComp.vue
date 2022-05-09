@@ -22,6 +22,8 @@ import ShowListSlot from "@/slot/ShowListSlot";
 import CartComp from "@/components/Cart/CartComp";
 import {API_TABLE} from "@/constan/api";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
+import {getAccount} from "@/util";
+import {getRouteParams} from "@/util/app";
 
 const api = new ApiReponsitory(API_TABLE.LIST)
 
@@ -34,17 +36,16 @@ export default {
   data() {
     return {
       listData: [],
-      role: localStorage.getItem('model') ? JSON.parse(localStorage.getItem('model'))?.role ?? 'normal' : ''
+      role: getAccount() ? JSON.parse(getAccount()).role : ''
     }
   },
   methods: {
     async getAllList() {
-      console.log("getAllList")
       const params = {
         signLocation: this.paramLocation,
         ...this.$route.query
       }
-      await api.call('get', params);
+      await api._call('get', params);
       await api._filter(food => food.tags.includes(this.paramTagItem))
       this.listData = api.data;
     },
@@ -61,19 +62,11 @@ export default {
     btnDetail() {
       return this.$i18n.t('information.btnDetail');
     },
-    paramLocation: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.location ?? 'da-nang'
-      }
+    paramLocation() {
+      return getRouteParams(this.$route, 'location')
     },
-    paramTagItem: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.tagItem ?? 'do-an'
-      }
+    paramTagItem() {
+      return getRouteParams(this.$route, 'tagItem')
     },
   },
   watch: {

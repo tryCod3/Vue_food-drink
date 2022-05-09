@@ -70,7 +70,7 @@ export default {
     async loadApi() {
       if (this.action === 'UPDATE_USER' && this.id !== '') {
         const params = {id: this.id};
-        await api.call('get', params);
+        await api._call('get', params);
         this.user = api.data[0];
       }
     },

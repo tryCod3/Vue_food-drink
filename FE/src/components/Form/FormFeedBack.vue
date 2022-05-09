@@ -30,16 +30,7 @@
           <span class="underline decoration-sky-500 font-bold text-green-50 ">
             Vote Me:
           </span>
-          <div class="flex justify-center">
-            <button v-for="i in 5" :key="i" :class="{ 'mr-1': i < 5 }" @click="star(listReview[index].data.id , i)">
-              <svg :class="[ listReview[index].review >= i ? 'text-amber-400': 'text-white']" class="block h-8 w-8"
-                   fill="currentColor"
-                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-              </svg>
-            </button>
-          </div>
+          <StarComp :is-edit="true" :ratting="listReview[index].review" :id="listReview[index].data.id" @star="star"/>
           <span class="underline decoration-sky-500 font-bold text-green-50">
             Review For You:
           </span>
@@ -77,9 +68,11 @@
 
 <script>
 
+import StarComp from "@/components/Common/StarComp";
 import {ApiReponsitory} from "@/api/ApiReponsitory";
 import {API_TABLE} from "@/constan/api";
 import {genId} from "@/util";
+import {getRouteParams} from "@/util/app";
 
 const api = new ApiReponsitory(API_TABLE.CART)
 const api_list = new ApiReponsitory(API_TABLE.LIST)
@@ -87,6 +80,7 @@ const api_review = new ApiReponsitory(API_TABLE.REVIEW)
 
 export default {
   name: "FormFeedBack",
+  components: {StarComp},
   created() {
     this.loadApi()
   },
@@ -100,21 +94,16 @@ export default {
   },
   methods: {
     async loadApi() {
-      await api.call('get', {id: this.idCart})
+      await api._call('get', {id: this.idCart})
       const list = api.data[0]
       for (let i = 0; i < list.lists.length; i++) {
-        await api_list.call('get', {id: list.lists[i].idCart})
+        await api_list._call('get', {id: list.lists[i].idCart})
         if (api_list.data.length > 0)
           this.listReview.push({data: api_list.data[0], review: 3})
       }
     },
-    star(id, star) {
-      for (let i = 0; i < this.listReview.length; i++) {
-        if (this.listReview[i].data.id === id) {
-          this.listReview[i].review = star
-          break
-        }
-      }
+    star(star) {
+      this.listReview[this.index].review = star
     },
     async handleSubmitReview() {
       const model = {
@@ -147,12 +136,8 @@ export default {
     }
   },
   computed: {
-    idCart: {
-      set() {
-      },
-      get() {
-        return this.$route.params.id;
-      }
+    idCart() {
+      return getRouteParams(this.$route, 'id')
     }
   }
 }

@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import {getRouteParams} from "@/util/app";
+
 export default {
   name: "CartDetailInformation",
   computed: {
@@ -46,19 +48,11 @@ export default {
     level() {
       return this.$i18n.t('cart.level')
     },
-    paramLocation: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.location ?? 'da-nang'
-      }
+    paramLocation() {
+      return getRouteParams(this.$route, 'location')
     },
-    paramTagItem: {
-      set() {
-      },
-      get() {
-        return this.$route.params?.tagItem ?? 'do-an'
-      }
+    paramTagItem() {
+      return getRouteParams(this.$route, 'tagItem')
     },
   }
 }

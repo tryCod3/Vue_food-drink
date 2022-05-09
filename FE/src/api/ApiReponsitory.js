@@ -11,7 +11,7 @@ export const ApiReponsitory = function (nameTable) {
     this.data = null
 }
 
-ApiReponsitory.prototype.call = async function (action, params) {
+ApiReponsitory.prototype._call = async function (action, params) {
     if (this.loading) return;
     this.loading = true;
     const api = await callApi(this.nameTable, action, params);
